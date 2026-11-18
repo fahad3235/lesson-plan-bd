@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson Plan BD — Weekly Planner for Teachers</title>
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<header class="app-header">
+  <div class="header-inner">
+    <div>
+      <h1 id="appTitle">Lesson Plan BD</h1>
+      <p id="appSubtitle" class="subtitle">Weekly lesson planner for Bangladeshi school teachers — plan, teach, track.</p>
+    </div>
+    <button id="langBtn" type="button" class="btn btn-lang">বাংলা</button>
+  </div>
+</header>
+
+<main class="container">
+  <section class="stats" aria-label="Summary">
+    <div class="stat"><span class="stat-num" id="statTotal">0</span><span class="stat-label" id="statTotalLabel">Total plans</span></div>
+    <div class="stat"><span class="stat-num" id="statWeek">0</span><span class="stat-label" id="statWeekLabel">This week</span></div>
+    <div class="stat"><span class="stat-num" id="statTaught">0</span><span class="stat-label" id="statTaughtLabel">Taught this week</span></div>
+    <div class="stat"><span class="stat-num" id="statMinutes">0</span><span class="stat-label" id="statMinutesLabel">Minutes this week</span></div>
+  </section>
+
+  <nav class="tabs" aria-label="Sections">
+    <button id="tabWeekBtn" type="button" class="tab-btn active" data-tab="week">Week</button>
+    <button id="tabPlansBtn" type="button" class="tab-btn" data-tab="plans">All Plans</button>
+    <button id="tabNewBtn" type="button" class="tab-btn" data-tab="new">New Plan</button>
+    <button id="tabDataBtn" type="button" class="tab-btn" data-tab="data">Data</button>
+  </nav>
+
+  <section id="tab-week" class="tab-panel">
+    <div class="week-nav">
+      <button id="weekPrevBtn" type="button" class="btn">← Prev week</button>
+      <span id="weekLabel" class="week-label"></span>
+      <button id="weekTodayBtn" type="button" class="btn">This week</button>
+      <button id="weekNextBtn" type="button" class="btn">Next week →</button>
+    </div>
+    <div id="weekGrid" class="week-grid"></div>
+  </section>
+
+  <section id="tab-plans" class="tab-panel" hidden>
+    <div class="filters">
+      <input id="searchInput" type="search" placeholder="Search topic…">
+      <select id="filterSubject" aria-label="Filter by subject"></select>
+      <select id="filterClass" aria-label="Filter by class"></select>
+      <select id="filterStatus" aria-label="Filter by status"></select>
+    </div>
+    <div id="plansList" class="plans-list"></div>
+  </section>
+
+  <section id="tab-new" class="tab-panel" hidden>
+    <form id="planForm" class="plan-form" novalidate>
+      <div class="form-row">
+        <div class="field">
+          <label id="fSubjectLabel" for="fSubject">Subject</label>
+          <select id="fSubject"></select>
+        </div>
+        <div class="field">
+          <label id="fClassLabel" for="fClass">Class</label>
+          <select id="fClass"></select>
+        </div>
+      </div>
+      <div class="field">
+        <label id="fTopicLabel" for="fTopic">Topic</label>
+        <input id="fTopic" type="text" maxlength="120" placeholder="e.g. Fractions — addition">
+      </div>
+      <div class="form-row">
+        <div class="field">
+          <label id="fDateLabel" for="fDate">Date</label>
+          <input id="fDate" type="date">
+        </div>
+        <div class="field">
+          <label id="fDurationLabel" for="fDuration">Duration (minutes)</label>
+          <input id="fDuration" type="number" min="10" max="180" step="5" value="40">
+        </div>
+        <div class="field">
+          <label id="fStatusLabel" for="fStatus">Status</label>
+          <select id="fStatus"></select>
+        </div>
+      </div>
+      <div class="field">
+        <label id="fObjectivesLabel" for="fObjectives">Objectives</label>
+        <textarea id="fObjectives" rows="3" placeholder="What will students learn? One per line."></textarea>
+      </div>
+      <div class="field">
+        <label id="fMaterialsLabel" for="fMaterials">Materials</label>
+        <textarea id="fMaterials" rows="2" placeholder="e.g. Textbook p. 42, chart paper, chalk"></textarea>
+      </div>
+      <div class="field">
+        <label id="fActivitiesLabel" for="fActivities">Activities</label>
+        <textarea id="fActivities" rows="4" placeholder="Step by step, one per line."></textarea>
+      </div>
+      <div class="field">
+        <h3 id="ideasTitle" class="ideas-title">Activity ideas — tap to add</h3>
+        <div id="ideasList" class="ideas-list"></div>
+      </div>
+      <div class="field">
+        <label id="fHomeworkLabel" for="fHomework">Homework</label>
+        <textarea id="fHomework" rows="2" placeholder="e.g. Exercise 3, questions 1–5"></textarea>
+      </div>
+      <p id="formMsg" class="form-msg" role="status"></p>
+      <div class="form-actions">
+        <button id="saveBtn" type="submit" class="btn btn-primary">Save plan</button>
+        <button id="cancelEditBtn" type="button" class="btn" hidden>Cancel edit</button>
+      </div>
+    </form>
+  </section>
+
+  <section id="tab-data" class="tab-panel" hidden>
+    <h2 id="exportTitle">Export / Import</h2>
+    <div class="data-actions">
+      <button id="exportBtn" type="button" class="btn">Copy export JSON</button>
+      <button id="importBtn" type="button" class="btn">Import from box</button>
+    </div>
+    <textarea id="dataBox" rows="8" class="data-box" aria-label="Export or import JSON"></textarea>
+    <p id="dataMsg" class="form-msg" role="status"></p>
+    <h2 id="eraseTitle">Erase everything</h2>
+    <p id="eraseHint" class="muted">Type DELETE below, then press Erase all. This removes every plan.</p>
+    <div class="data-actions">
+      <input id="eraseInput" type="text" placeholder="DELETE" autocomplete="off">
+      <button id="eraseBtn" type="button" class="btn btn-danger">Erase all</button>
+    </div>
+  </section>
+
+  <footer>
+    <p id="disclaimer" class="disclaimer">Offline personal planner. It stores your plans only in this browser (localStorage) and sends nothing anywhere. Class times and the Saturday–Thursday week follow the usual Bangladesh school pattern — adjust dates to your own school calendar.</p>
+  </footer>
+</main>
+
+<script src="js/core.js"></script>
+<script src="js/data.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
